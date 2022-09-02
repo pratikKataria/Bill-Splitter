@@ -7,5 +7,7 @@ class Images {
 
   static const kAppIcon = base + "ic_app_logo.png";
   static const kImageLogin = base + "img_login.png";
+  static const kImageHome = base + "img_home.png";
+  static const kImageDialog = base + "img_dialog.png";
 
 }
