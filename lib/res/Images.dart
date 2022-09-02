@@ -9,5 +9,7 @@ class Images {
   static const kImageLogin = base + "img_login.png";
   static const kImageHome = base + "img_home.png";
   static const kImageDialog = base + "img_dialog.png";
+  static const kImageNote = base + "img_note.png";
+  static const kImageSplitBill = base + "img_split_bill.png";
 
 }

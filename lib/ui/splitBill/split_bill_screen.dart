@@ -4,14 +4,14 @@ import 'package:bill_splitter/res/Images.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key key}) : super(key: key);
+class SplitBillScreen extends StatefulWidget {
+  const SplitBillScreen({Key key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SplitBillScreen> createState() => _SplitBillScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SplitBillScreenState extends State<SplitBillScreen> {
   final subTextStyle = textStyleSubText14px500w;
   final mainTextStyle = textStyle14px500w;
 
@@ -27,121 +27,38 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: AppColors.colorPrimaryLight,
-              child: Image.asset(Images.kImageNote),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                children: [
-                  Text("Welcome"),
-                  Text("Pratik katariya"),
-                ],
-              ),
-            ),
-            Container(
               height: 210.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   alignment: Alignment.centerRight,
-                  image: AssetImage(Images.kImageHome),
+                  image: AssetImage(Images.kImageSplitBill),
                 ),
               ),
-              child: Center(
-                child: Container(
-                  height: 110.0,
-                  color: AppColors.black,
-                  margin: EdgeInsets.symmetric(horizontal: 80.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Total Balance"),
-                      Text("0 Rs"),
-                      Row(
-                        children: [
-                          Text("Amount to be Paid:"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("Amount to be Received:"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: 30.0,
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25.0),
-                child: ListView(
-                  children: [
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text("Goa Trip"),
-                              Text("2000 Rs."),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text("10 people added to the split"),
-                              Text("200 Rs./head"),
-                            ],
-                          ),
-                          Text("27 Mar 2022"),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        Image.asset(Images.kImageLogin, height: 34.0),
-                        Text("Groups"),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      _modalBottomSheetMenu(context);
-                    },
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Image.asset(Images.kImageLogin, height: 34.0),
-                          Text("Create Group"),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Image.asset(Images.kImageLogin, height: 34.0),
-                        Text("Account"),
-                      ],
-                    ),
-                  ),
+                  Text("Total Bill", style: mainTextStyle),
+                  Text("0 Rs.", style: mainTextStyle)
                 ],
               ),
             ),
+            Text("Total Bill", style: mainTextStyle),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Expenses", style: mainTextStyle),
+                Text("Add New", style: mainTextStyle),
+              ],
+            ),
+
+            Expanded(
+              child: ListView(
+                children: [
+
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -247,34 +164,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-// void showDetailDialog(BuildContext context) {
-//   AlertDialog alert = AlertDialog(
-//     contentPadding: EdgeInsets.all(0.0),
-//     backgroundColor: Colors.transparent,
-//     content: Wrap(
-//       children: [
-//         Column(
-//           children: [
-//             Container(
-//               height: 310.0,
-//               decoration: BoxDecoration(
-//                 image: DecorationImage(
-//                   image: AssetImage(Images.kImageDialog),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ],
-//     ),
-//   );
-//
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return alert;
-//     },
-//   );
-// }
 }

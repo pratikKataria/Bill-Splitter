@@ -1,6 +1,7 @@
 import 'package:bill_splitter/ui/core/login/login_screen.dart';
 import 'package:bill_splitter/ui/core/signup/signup_screen.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
+import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Bill Splitter',
-      home: HomeScreen(),
+      home: SplitBillScreen(),
     );
   }
 }
