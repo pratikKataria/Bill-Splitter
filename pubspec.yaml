@@ -38,3 +38,14 @@ flutter:
   assets:
     - assets/
     - assets/images/
+
+  fonts:
+    - family: montserrat
+      fonts:
+        - asset: assets/fonts/montserrat_bold.otf
+        - asset: assets/fonts/montserrat_extra_bold.otf
+        - asset: assets/fonts/montserrat_light.otf
+        - asset: assets/fonts/montserrat_medium.otf
+        - asset: assets/fonts/montserrat_regular.otf
+        - asset: assets/fonts/montserrat_semi_bold.otf
+        - asset: assets/fonts/montserrat_thin.otf
