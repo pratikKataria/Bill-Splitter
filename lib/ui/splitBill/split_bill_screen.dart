@@ -1,6 +1,8 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
+import 'package:bill_splitter/ui/home/home_screen.dart';
+import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
@@ -26,41 +28,117 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 210.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  alignment: Alignment.centerRight,
-                  image: AssetImage(Images.kImageSplitBill),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Total Bill", style: mainTextStyle),
-                  Text("0 Rs.", style: mainTextStyle)
-                ],
-              ),
-            ),
-            Text("Total Bill", style: mainTextStyle),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            UserNoteWidget(),
+            verticalSpace(20.0),
+            header(),
+            verticalSpace(25.0),
+            Stack(
               children: [
-                Text("Expenses", style: mainTextStyle),
-                Text("Add New", style: mainTextStyle),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 55.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          verticalSpace(10.0),
+                          Text("Goa Trip", style: textStyle14px500w),
+                          Text("Created by you", style: textStyle14px500w),
+                        ],
+                      ),
+                    ),
+                    verticalSpace(20.0),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        height: 80.0,
+                        width: Utility.screenWidth(context) * 0.9,
+                        padding: EdgeInsets.symmetric(horizontal: 30.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.colorPrimaryLight,
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24.0), topLeft: Radius.circular(24.0)),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Total bill", style: textStyleRegular16px500px),
+                            Text("0 Rs", style: textStyleDarkHeavy24px700),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(right: 20, child: Image.asset(Images.kImageSplitBill, height: 140.0)),
               ],
             ),
-
+            verticalSpace(2.0),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                horizontalSpace(45.0),
+                Text("Split between ", style: textStyleRegular16px500px),
+                Text("0", style: textStyleDarkHeavy24px700),
+                Text(" People", style: textStyleRegular16px500px),
+              ],
+            ),
+            verticalSpace(20.0),
+            Row(
+              children: [
+                horizontalSpace(45.0),
+                Text("Expenses", style: mainTextStyle),
+                Spacer(),
+                Text("Add New", style: textStyleRedRegular14px700w),
+                horizontalSpace(20.0),
+              ],
+            ),
             Expanded(
               child: ListView(
-                children: [
-
-                ],
+                children: [],
               ),
-            )
+            ),
+            Center(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.colorPrimaryLight,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  height: 45.0,
+                  width: 200.0,
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Center(child: Text("Submit Request", style: textStylePrimary16px700w)),
+                ),
+              ),
+            ),
+            verticalSpace(10.0),
           ],
         ),
+      ),
+    );
+  }
+
+  Container header() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        children: [
+          Icon(Icons.arrow_back_ios),
+          horizontalSpace(10.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Split the bill", style: textStyle14px500w),
+              Text("Enjoy together, happy to share", style: textStyle12px500w),
+            ],
+          ),
+        ],
       ),
     );
   }

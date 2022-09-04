@@ -12,7 +12,7 @@ class UserNoteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.colorPrimaryLight,
-      padding: EdgeInsets.all(4.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

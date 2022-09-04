@@ -1,6 +1,7 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
+import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
@@ -192,7 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     verticalSpace(28.0),
                     Center(
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SplitBillScreen()));
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             color: AppColors.colorPrimaryLight,
