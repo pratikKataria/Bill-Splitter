@@ -64,7 +64,7 @@ class Utility {
         children: [
           const Icon(Icons.warning_rounded, color: AppColors.red),
           const SizedBox(width: 6.0),
-          Expanded(child: Text("$text", style: textStyleRed12px600w, maxLines: 2, overflow: TextOverflow.ellipsis)),
+          Expanded(child: Text("$text", style: textStyleWhite12px500w, maxLines: 2, overflow: TextOverflow.ellipsis)),
         ],
       ),
     );

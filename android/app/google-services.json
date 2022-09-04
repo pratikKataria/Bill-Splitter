@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "374440511837",
+    "project_id": "billsplitter-5d720",
+    "storage_bucket": "billsplitter-5d720.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374440511837:android:f186b4e96fc4cae30c40b4",
+        "android_client_info": {
+          "package_name": "com.flutter_god.bill_splitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374440511837-3s13tufrthgftsa0onoa28t40a9ltl10.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutter_god.bill_splitter",
+            "certificate_hash": "10e0aa3f72bcb568f052a0602e249a236724794d"
+          }
+        },
+        {
+          "client_id": "374440511837-a4649mmt9b53gfqbtclueg24p41r5dlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4S-7ZuiaD6WsxcarkhQJNMV6abZEbiRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374440511837-a4649mmt9b53gfqbtclueg24p41r5dlv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

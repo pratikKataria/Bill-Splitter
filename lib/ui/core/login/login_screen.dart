@@ -1,11 +1,17 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
+import 'package:bill_splitter/ui/core/core_view.dart';
+import 'package:bill_splitter/ui/core/signup/model/user_response.dart';
 import 'package:bill_splitter/ui/core/signup/signup_screen.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
+import 'package:bill_splitter/user/AuthUser.dart';
+import 'package:bill_splitter/user/CurrentUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../core_presenter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -14,12 +20,21 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> implements CoreView {
   final subTextStyle = textStyle12px500w;
   final mainTextStyle = textStyleSubText12px600w;
 
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController otpTextController = TextEditingController();
+
+  CorePresenter presenter;
+
+  @override
+  void initState() {
+    super.initState();
+    presenter = CorePresenter(this);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               verticalSpace(20.0),
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                   presenter.loginUser(emailTextController.text.toString());
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -155,5 +170,21 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  Future<void> onNewUserCreated(UserResponse r) async {
+    Utility.showSuccessToastB(context, "New Id Created");
+    CurrentUser currentUser = CurrentUser();
+    currentUser.userCredentials = r;
+    AuthUser.getInstance().login(currentUser);
+
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  }
+
+  @override
+  void onError(String message) {
+    Utility.showErrorToastB(context, message);
   }
 }
