@@ -2,12 +2,16 @@ import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
+import 'package:bill_splitter/ui/splitBill/model/split_request.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({Key key}) : super(key: key);
+  final String name;
+
+  const AddExpenseScreen(this.name, {Key key}) : super(key: key);
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
@@ -20,6 +24,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController otpTextController = TextEditingController();
 
+  List<Expenses> expenses = [];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,7 +36,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           children: [
             verticalSpace(20.0),
             header(),
-            Container(margin: EdgeInsets.only(left: 40.0, top: 20.0), child: Text("Anil", style: textStyleDarkHeavy24px700)),
+            Container(
+              margin: EdgeInsets.only(left: 40.0, top: 20.0),
+              child: Text("${widget?.name} (${totalExpense()} Rs.)", style: textStyleDarkHeavy24px700),
+            ),
             verticalSpace(10.0),
             Row(
               children: [
@@ -39,155 +48,171 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 Spacer(),
                 InkWell(
                     onTap: () {
-                      _modalBottomSheetMenu(context);
+                      expenses.add(Expenses());
+                      setState(() {});
                     },
-                    child: Text("Add New", style: textStyleRedRegular14px700w)),
+                    child: Text("+ New", style: textStyleRedRegular14px700w)),
+                horizontalSpace(20.0),
               ],
             ),
             Expanded(
               child: ListView(
                 children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
-                    margin: EdgeInsets.only(left: 40.0, top: 20.0, bottom: 20.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.colorSecondaryLight,
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 38,
-                          decoration: BoxDecoration(
-                            color: AppColors.colorPrimaryLight,
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 40.0,
-                                margin: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: Text("Title", style: mainTextStyle),
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  obscureText: false,
-                                  textAlign: TextAlign.left,
-                                  maxLines: 1,
-                                  textCapitalization: TextCapitalization.none,
-                                  style: subTextStyle,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Enter title",
-                                    hintStyle: subTextStyle,
-                                    isDense: true,
-                                    suffixStyle: TextStyle(color: AppColors.textColor),
+                  ...expenses
+                      .map((e) => Container(
+                            padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
+                            margin: EdgeInsets.only(left: 40.0, top: 20.0, bottom: 20.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.colorSecondaryLight,
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 38,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.colorPrimaryLight,
+                                    borderRadius: BorderRadius.circular(6.0),
                                   ),
-                                  onChanged: (String val) {
-                                    /*      widget.onTextChange(val);
-                        resetErrorOnTyping();*/
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        verticalSpace(10.0),
-                        verticalSpace(10.0),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 60.0,
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                decoration: BoxDecoration(
-                                  color: AppColors.colorPrimaryLight,
-                                  borderRadius: BorderRadius.circular(6.0),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    verticalSpace(8.0),
-                                    Text("Quantity", style: mainTextStyle),
-                                    Expanded(
-                                      child: TextFormField(
-                                        obscureText: false,
-                                        textAlign: TextAlign.left,
-                                        maxLines: 1,
-                                        textCapitalization: TextCapitalization.none,
-                                        style: subTextStyle,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Enter qty",
-                                          hintStyle: subTextStyle,
-                                          isDense: true,
-                                          suffixStyle: TextStyle(color: AppColors.textColor),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 40.0,
+                                        margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                        child: Text("Title", style: mainTextStyle),
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          obscureText: false,
+                                          textAlign: TextAlign.left,
+                                          maxLines: 1,
+                                          textCapitalization: TextCapitalization.none,
+                                          style: subTextStyle,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Enter title",
+                                            hintStyle: subTextStyle,
+                                            isDense: true,
+                                            suffixStyle: TextStyle(color: AppColors.textColor),
+                                          ),
+                                          onChanged: (String val) {
+                                            e.label = val;
+                                            setState(() {});
+                                          },
                                         ),
-                                        onChanged: (String val) {
-                                          /*      widget.onTextChange(val);
-                              resetErrorOnTyping();*/
-                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                verticalSpace(10.0),
+                                verticalSpace(10.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 60.0,
+                                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.colorPrimaryLight,
+                                          borderRadius: BorderRadius.circular(6.0),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            verticalSpace(8.0),
+                                            Text("Quantity", style: mainTextStyle),
+                                            Expanded(
+                                              child: TextFormField(
+                                                obscureText: false,
+                                                textAlign: TextAlign.left,
+                                                maxLines: 1,
+                                                textCapitalization: TextCapitalization.none,
+                                                inputFormatters: [LengthLimitingTextInputFormatter(4)],
+                                                keyboardType: TextInputType.number,
+                                                style: subTextStyle,
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: "def: 1",
+                                                  hintStyle: subTextStyle,
+                                                  isDense: true,
+                                                  suffixStyle: TextStyle(color: AppColors.textColor),
+                                                ),
+                                                onChanged: (String val) {
+                                                  try {
+                                                    e.qty = int.parse(val);
+                                                  } catch (e) {
+                                                    e.qty = 0;
+                                                  }
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    horizontalSpace(10.0),
+                                    Expanded(
+                                      child: Container(
+                                        height: 60.0,
+                                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.colorPrimaryLight,
+                                          borderRadius: BorderRadius.circular(6.0),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            verticalSpace(8.0),
+                                            Text("Price", style: mainTextStyle),
+                                            Expanded(
+                                              child: TextFormField(
+                                                obscureText: false,
+                                                textAlign: TextAlign.left,
+                                                maxLines: 1,
+                                                textCapitalization: TextCapitalization.none,
+                                                style: subTextStyle,
+                                                inputFormatters: [LengthLimitingTextInputFormatter(4)],
+                                                keyboardType: TextInputType.number,
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: "Enter Price",
+                                                  hintStyle: subTextStyle,
+                                                  isDense: true,
+                                                  suffixStyle: TextStyle(color: AppColors.textColor),
+                                                ),
+                                                onChanged: (String val) {
+                                                  try {
+                                                    e.cost = int.parse(val);
+                                                  } catch (e) {
+                                                    e.price = 0;
+                                                  }
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
+                              ],
                             ),
-                            horizontalSpace(10.0),
-                            Expanded(
-                              child: Container(
-                                height: 60.0,
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                decoration: BoxDecoration(
-                                  color: AppColors.colorPrimaryLight,
-                                  borderRadius: BorderRadius.circular(6.0),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    verticalSpace(8.0),
-                                    Text("Price", style: mainTextStyle),
-                                    Expanded(
-                                      child: TextFormField(
-                                        obscureText: false,
-                                        textAlign: TextAlign.left,
-                                        maxLines: 1,
-                                        textCapitalization: TextCapitalization.none,
-                                        style: subTextStyle,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Enter Price",
-                                          hintStyle: subTextStyle,
-                                          isDense: true,
-                                          suffixStyle: TextStyle(color: AppColors.textColor),
-                                        ),
-                                        onChanged: (String val) {
-                                          /*      widget.onTextChange(val);
-                        resetErrorOnTyping();*/
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                          ))
+                      .toList(),
                 ],
               ),
             ),
             Center(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                  Navigator.pop(context, expenses);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -197,7 +222,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   height: 45.0,
                   width: 200.0,
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Center(child: Text("Submit Request", style: textStylePrimary16px700w)),
+                  child: Center(child: Text("Add", style: textStylePrimary16px700w)),
                 ),
               ),
             ),
@@ -206,6 +231,14 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         ),
       ),
     );
+  }
+
+  int totalExpense() {
+    int totalExpense = 0;
+    expenses.forEach((element) {
+      totalExpense += (element.cost*element.qty);
+    });
+    return totalExpense;
   }
 
   Container header() {

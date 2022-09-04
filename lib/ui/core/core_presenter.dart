@@ -82,6 +82,6 @@ class CorePresenter {
 
   String idGenerator() {
     final now = DateTime.now();
-    return now.microsecondsSinceEpoch.toString();
+    return "uid-${now.microsecondsSinceEpoch.toString()}";
   }
 }

@@ -58,6 +58,12 @@ const textStyleDarkHeavy24px700 = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: fontH1);
 
+const textStyleDarkHeavy18px700 = TextStyle(
+    color: AppColors.textColorBlack,
+    fontFamily: kFontFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 16);
+
 const textStyleDarkHeavy24px600 = TextStyle(
     color: AppColors.textColorBlack,
     fontFamily: kFontFamily,

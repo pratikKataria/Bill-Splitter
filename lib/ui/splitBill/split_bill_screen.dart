@@ -2,8 +2,12 @@ import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
 import 'package:bill_splitter/ui/addExpense/add_expense.dart';
-import 'package:bill_splitter/ui/home/home_screen.dart';
+import 'package:bill_splitter/ui/core/signup/model/user_response.dart';
+import 'package:bill_splitter/ui/splitBill/model/split_request.dart';
+import 'package:bill_splitter/ui/splitBill/split_bill_presenter.dart';
+import 'package:bill_splitter/ui/splitBill/split_bill_view.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
+import 'package:bill_splitter/user/AuthUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
@@ -16,14 +20,34 @@ class SplitBillScreen extends StatefulWidget {
   State<SplitBillScreen> createState() => _SplitBillScreenState();
 }
 
-class _SplitBillScreenState extends State<SplitBillScreen> {
+class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillView {
   final subTextStyle = textStyleSubText12px500w;
   final mainTextStyle = textStyle12px500w;
 
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController otpTextController = TextEditingController();
 
-  List<String> guestFriends = [];
+  List<GuestFriend> firends = [];
+  List<UserResponse> listOfUserss = [];
+  SplitRequest splitRequest = SplitRequest();
+
+  SplitBillPresenter presenter;
+
+  @override
+  void initState() {
+    super.initState();
+    presenter = SplitBillPresenter(this);
+    presenter.getAllUsers();
+    addGroupMetaData();
+  }
+
+  Future<void> addGroupMetaData() async {
+    splitRequest.groupName = widget?.groupName;
+    splitRequest.createdby = (await AuthUser().getCurrentUser()).userCredentials.name;
+    splitRequest.totalPeople = 1;
+    splitRequest.groupTotal = 0;
+    splitRequest.splitPerHead = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +94,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Total bill", style: textStyleRegular16px500px),
-                            Text("0 Rs", style: textStyleDarkHeavy24px700),
+                            Text("${calculateTotalBill()} Rs", style: textStyleDarkHeavy24px700),
                           ],
                         ),
                       ),
@@ -86,8 +110,18 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
               children: [
                 horizontalSpace(45.0),
                 Text("Split between ", style: textStyleRegular16px500px),
-                Text("0", style: textStyleDarkHeavy24px700),
+                Text("${((firends?.length) ?? 0)}", style: textStyleDarkHeavy24px700),
                 Text(" People", style: textStyleRegular16px500px),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                horizontalSpace(45.0),
+                Text("Split per head", style: textStyle12px500w),
+                horizontalSpace(6.0),
+                Text("${(calculateTotalBill() / ((firends?.length ?? 1))).toStringAsFixed(2)} Rs.",
+                    style: textStyleDarkHeavy18px700),
               ],
             ),
             verticalSpace(25.0),
@@ -110,30 +144,48 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                 margin: EdgeInsets.only(left: 40.0),
                 child: ListView(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
-                      decoration: BoxDecoration(
-                        color: AppColors.colorSecondaryLight,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Deepak (400 Rs.)", style: textStyle14px500w),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddExpenseScreen()));
-                                },
-                                child: Text("+ Expense", style: textStyleSecondary12px700w),
+                    ...firends
+                        .map((e) => Container(
+                              padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
+                              margin: EdgeInsets.only(bottom: 20.0),
+                              decoration: BoxDecoration(
+                                color: AppColors.colorSecondaryLight,
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("${e?.name ?? ""}", style: textStyleDark16px600w),
+                                      InkWell(
+                                        onTap: () async {
+                                          List<Expenses> exp = await Navigator.push(
+                                              context, MaterialPageRoute(builder: (context) => AddExpenseScreen(e.name)));
+                                          if (e.expenses == null) e.expenses = [];
+                                          e.expenses.addAll(exp);
+                                          print("${e.expenses}");
+                                          setState(() {});
+                                        },
+                                        child: Text("+ Expense", style: textStyleSecondary12px700w),
+                                      ),
+                                    ],
+                                  ),
+                                  ...e?.expenses
+                                          ?.map((ex) => Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("${ex.label}", style: textStyle12px500w),
+                                                  Text("${ex.cost} / ${ex.qty} Qty", style: textStyleSecondary12px700w),
+                                                ],
+                                              ))
+                                          ?.toList() ??
+                                      [],
+                                ],
+                              ),
+                            ))
+                        .toList()
                   ],
                 ),
               ),
@@ -141,7 +193,11 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
             Center(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                  splitRequest.guestFriend = firends;
+                  splitRequest.groupTotal = calculateTotalBill();
+                  splitRequest.splitPerHead = double.parse((calculateTotalBill() / (firends.length)).toStringAsFixed(2));
+                  splitRequest.totalPeople = firends.length + 1;
+                  presenter.createGroup(splitRequest);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -160,6 +216,23 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
         ),
       ),
     );
+  }
+
+  int calculateTotalBill() {
+    int total = 0;
+    if (firends != null) {
+      firends.forEach((element) {
+        if (element.expenses == null || element.expenses.isEmpty) {
+          return;
+        }
+
+        element.expenses.forEach((element) {
+          total += (element.cost * element.qty);
+        });
+      });
+    }
+
+    return total;
   }
 
   Container header() {
@@ -189,7 +262,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
         builder: (
           builder,
         ) {
-          return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+          return StatefulBuilder(builder: (BuildContext context, StateSetter setState2) {
             return Stack(
               children: [
                 AnimatedPadding(
@@ -217,19 +290,41 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                                decoration: BoxDecoration(
-                                    color: AppColors.colorPrimaryLight, borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                                child: Center(child: Text("Anil", style: textStyle12px500w)),
-                              )
+                              ...listOfUserss
+                                  .map((e) => InkWell(
+                                        onTap: () {
+                                          String s = e.name;
+                                          bool contains = firends.any((item) => item.name == s);
+                                          GuestFriend guestFriend = GuestFriend();
+                                          guestFriend.name = s;
+                                          guestFriend.uid = e.uid;
+
+                                          if (contains)
+                                            Utility.showErrorToastB(context, "Already added");
+                                          else
+                                            firends.insert(0, guestFriend);
+
+                                          setState2(() {});
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                                          margin: EdgeInsets.only(right: 20.0),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.colorPrimaryLight,
+                                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                          ),
+                                          child: Center(child: Text("${e?.name}", style: textStyle12px500w)),
+                                        ),
+                                      ))
+                                  .toList()
                             ],
                           ),
                         ),
                         verticalSpace(20.0),
                         Text('Add by name', style: textStyle14px500w),
                         verticalSpace(10.0),
-                        emailField(setState),
+                        emailField(setState2),
                         verticalSpace(20.0),
                         Text('Added', style: textStyle14px500w),
                         verticalSpace(10.0),
@@ -238,7 +333,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              ...guestFriends
+                              ...firends
                                   .map((e) => Container(
                                         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
                                         margin: EdgeInsets.only(right: 10.0),
@@ -249,11 +344,12 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                                         child: Center(
                                           child: Row(
                                             children: [
-                                              Text(e, style: textStyle12px500w),
+                                              Text(e?.name ?? "", style: textStyle12px500w),
                                               horizontalSpace(10.0),
                                               InkWell(
                                                 onTap: () {
-                                                  guestFriends.remove(e);
+                                                  firends.remove(e);
+                                                  setState2(() {});
                                                   setState(() {});
                                                 },
                                                 child: Icon(Icons.remove_circle_outline_rounded,
@@ -297,7 +393,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
         });
   }
 
-  Container emailField(StateSetter setState) {
+  Container emailField(StateSetter setState2) {
     return Container(
       height: 38,
       decoration: BoxDecoration(
@@ -336,12 +432,18 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
           ),
           InkWell(
             onTap: () {
-              String firend = emailTextController.text.toString();
-              if (guestFriends.contains(firend))
+              String s = emailTextController.text.toString();
+              bool contains = firends.any((item) => item.name == s);
+              GuestFriend guestFriend = GuestFriend();
+              guestFriend.name = s;
+
+              if (contains)
                 Utility.showErrorToastB(context, "Already added");
               else
-                guestFriends.insert(0, firend);
+                firends.insert(0, guestFriend);
+
               emailTextController.clear();
+              setState2(() {});
               setState(() {});
             },
             child: Container(
@@ -353,5 +455,15 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void onError(String message) {}
+
+  @override
+  void onAllUserFetched(List<UserResponse> listOfUsers) {
+    listOfUserss.clear();
+    listOfUserss.addAll(listOfUsers);
+    setState(() {});
   }
 }
