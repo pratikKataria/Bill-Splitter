@@ -297,7 +297,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SplitBillScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SplitBillScreen("")));
                         },
                         child: Container(
                           decoration: BoxDecoration(

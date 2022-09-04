@@ -3,6 +3,7 @@ import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
+import 'package:bill_splitter/user/AuthUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final subTextStyle = textStyleSubText14px500w;
   final mainTextStyle = textStyle14px500w;
 
-  final TextEditingController emailTextController = TextEditingController();
-  final TextEditingController otpTextController = TextEditingController();
+  final TextEditingController groupTextController = TextEditingController();
+
+  String userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
+  Future<void> getUserName() async {
+    userName = (await AuthUser.getInstance().getCurrentUser())?.userCredentials?.name;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           verticalSpace(10.0),
                           Text("Welcome", style: textStylePrimary22px700w),
-                          Text("Pratik katariya", style: textStyle14px500w),
+                          Text("${userName}", style: textStyle14px500w),
                         ],
                       ),
                     ),
@@ -194,7 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SplitBillScreen()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SplitBillScreen(groupTextController.text.toString())));
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -240,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: TextFormField(
               obscureText: false,
               textAlign: TextAlign.left,
-              controller: emailTextController,
+              controller: groupTextController,
               maxLines: 1,
               textCapitalization: TextCapitalization.none,
               style: subTextStyle,
@@ -251,16 +266,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 isDense: true,
                 suffixStyle: TextStyle(color: AppColors.textColor),
               ),
-              onChanged: (String val) {
-                /*      widget.onTextChange(val);
-                        resetErrorOnTyping();*/
-              },
+              onChanged: (String val) {},
             ),
           ),
         ],
       ),
     );
   }
-
-
 }

@@ -8,7 +8,9 @@ import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
 class SplitBillScreen extends StatefulWidget {
-  const SplitBillScreen({Key key}) : super(key: key);
+  final String groupName;
+
+  const SplitBillScreen(this.groupName, {Key key}) : super(key: key);
 
   @override
   State<SplitBillScreen> createState() => _SplitBillScreenState();
@@ -20,6 +22,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
 
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController otpTextController = TextEditingController();
+
+  List<String> guestFriends = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           verticalSpace(10.0),
-                          Text("Goa Trip", style: textStyle14px500w),
+                          Text("${widget.groupName}", style: textStyle14px500w),
                           Text("Created by you", style: textStyle14px500w),
                         ],
                       ),
@@ -96,7 +100,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                     onTap: () {
                       _modalBottomSheetMenu(context);
                     },
-                    child: Text("Add New", style: textStyleRedRegular14px700w)),
+                    child: Text("+ New", style: textStyleRedRegular14px700w)),
                 horizontalSpace(20.0),
               ],
             ),
@@ -182,100 +186,118 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (builder) {
-          return Stack(
-            children: [
-              Container(
-                height: Utility.screenHeight(context) * 0.60,
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                margin: const EdgeInsets.only(top: 90.0),
-                decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(24.0),
-                      topLeft: Radius.circular(24.0),
-                    )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Add Friends', style: textStyle20px600w),
-                    verticalSpace(20.0),
-                    Text('Add from list', style: textStyle14px500w),
-                    verticalSpace(10.0),
-                    Container(
-                      height: 40.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                                color: AppColors.colorPrimaryLight, borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                            child: Center(child: Text("Anil", style: textStyle12px500w)),
-                          )
-                        ],
-                      ),
-                    ),
-                    verticalSpace(20.0),
-                    Text('Add by name', style: textStyle14px500w),
-                    verticalSpace(10.0),
-                    emailField(),
-                    verticalSpace(20.0),
-                    Text('Added', style: textStyle14px500w),
-                    verticalSpace(10.0),
-                    Container(
-                      height: 40.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.colorSecondaryLight,
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  Text("Anil", style: textStyle12px500w),
-                                  horizontalSpace(10.0),
-                                  Icon(Icons.remove_circle_outline_rounded, color: AppColors.colorSecondary, size: 24.0)
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    verticalSpace(20.0),
-                    Center(
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.colorPrimaryLight,
-                            borderRadius: BorderRadius.circular(12.0),
+        builder: (
+          builder,
+        ) {
+          return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+            return Stack(
+              children: [
+                AnimatedPadding(
+                  padding: MediaQuery.of(context).viewInsets,
+                  duration: Duration(milliseconds: 400),
+                  child: Container(
+                    height: Utility.screenHeight(context) * 0.50,
+                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+                    margin: const EdgeInsets.only(top: 90.0),
+                    decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(24.0),
+                          topLeft: Radius.circular(24.0),
+                        )),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Add Friends', style: textStyle20px600w),
+                        verticalSpace(20.0),
+                        Text('Add from Accounts', style: textStyle14px500w),
+                        verticalSpace(10.0),
+                        Container(
+                          height: 40.0,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                                decoration: BoxDecoration(
+                                    color: AppColors.colorPrimaryLight, borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                                child: Center(child: Text("Anil", style: textStyle12px500w)),
+                              )
+                            ],
                           ),
-                          height: 45.0,
-                          width: 200.0,
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Center(child: Text("Create", style: textStylePrimary16px700w)),
                         ),
-                      ),
+                        verticalSpace(20.0),
+                        Text('Add by name', style: textStyle14px500w),
+                        verticalSpace(10.0),
+                        emailField(setState),
+                        verticalSpace(20.0),
+                        Text('Added', style: textStyle14px500w),
+                        verticalSpace(10.0),
+                        Container(
+                          height: 40.0,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ...guestFriends
+                                  .map((e) => Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                                        margin: EdgeInsets.only(right: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.colorSecondaryLight,
+                                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                        ),
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Text(e, style: textStyle12px500w),
+                                              horizontalSpace(10.0),
+                                              InkWell(
+                                                onTap: () {
+                                                  guestFriends.remove(e);
+                                                  setState(() {});
+                                                },
+                                                child: Icon(Icons.remove_circle_outline_rounded,
+                                                    color: AppColors.colorSecondary, size: 24.0),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(20.0),
+                        // Center(
+                        //   child: InkWell(
+                        //     onTap: () {},
+                        //     child: Container(
+                        //       decoration: BoxDecoration(
+                        //         color: AppColors.colorPrimaryLight,
+                        //         borderRadius: BorderRadius.circular(12.0),
+                        //       ),
+                        //       height: 45.0,
+                        //       width: 200.0,
+                        //       padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        //       child: Center(child: Text("Create", style: textStylePrimary16px700w)),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              Positioned(
-                right: 0.0,
-                child: Image.asset(Images.kImageAddFriend, height: 150.0),
-              ),
-            ],
-          );
+                Positioned(
+                  right: 0.0,
+                  child: Image.asset(Images.kImageAddFriend, height: 150.0),
+                ),
+              ],
+            );
+          });
         });
   }
 
-  Container emailField() {
+  Container emailField(StateSetter setState) {
     return Container(
       height: 38,
       decoration: BoxDecoration(
@@ -312,6 +334,22 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
               },
             ),
           ),
+          InkWell(
+            onTap: () {
+              String firend = emailTextController.text.toString();
+              if (guestFriends.contains(firend))
+                Utility.showErrorToastB(context, "Already added");
+              else
+                guestFriends.insert(0, firend);
+              emailTextController.clear();
+              setState(() {});
+            },
+            child: Container(
+              color: AppColors.colorPrimaryLight,
+              child: Icon(Icons.add),
+            ),
+          ),
+          horizontalSpace(10.0),
         ],
       ),
     );
