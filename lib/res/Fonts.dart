@@ -440,6 +440,23 @@ const textStyleSecondaryLight14px500w = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 14);
 
+const textStyleSecondary14px700w = TextStyle(
+    color: AppColors.colorSecondary,
+    fontFamily: kFontFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 14);
+const textStyleSecondary12px700w = TextStyle(
+    color: AppColors.colorSecondary,
+    fontFamily: kFontFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 12);
+const textStyleSecondary12px600w = TextStyle(
+    color: AppColors.colorSecondary,
+    fontFamily: kFontFamily,
+    fontWeight: FontWeight.w600,
+    fontSize: 12);
+
+
 const textStyleHeader14px500w = TextStyle(
     color: AppColors.textColorHeather,
     fontFamily: kFontFamily,

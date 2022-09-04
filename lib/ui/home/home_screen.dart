@@ -1,6 +1,7 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
+import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
@@ -26,52 +27,60 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              color: AppColors.colorPrimaryLight,
-              child: Image.asset(Images.kImageNote),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                children: [
-                  Text("Welcome"),
-                  Text("Pratik katariya"),
-                ],
-              ),
-            ),
-            Container(
-              height: 210.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  alignment: Alignment.centerRight,
-                  image: AssetImage(Images.kImageHome),
-                ),
-              ),
-              child: Center(
-                child: Container(
-                  height: 110.0,
-                  color: AppColors.black,
-                  margin: EdgeInsets.symmetric(horizontal: 80.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Total Balance"),
-                      Text("0 Rs"),
-                      Row(
+            UserNoteWidget(),
+            verticalSpace(10.0),
+            Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Column(
                         children: [
-                          Text("Amount to be Paid:"),
+                          verticalSpace(10.0),
+                          Text("Welcome", style: textStylePrimary22px700w),
+                          Text("Pratik katariya", style: textStyle14px500w),
                         ],
                       ),
-                      Row(
+                    ),
+                    verticalSpace(20.0),
+                    Container(
+                      height: 130.0,
+                      width: Utility.screenWidth(context) * 0.9,
+                      padding: EdgeInsets.symmetric(horizontal: 30.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.colorPrimaryLight,
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(24.0), topRight: Radius.circular(24.0)),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Amount to be Received:"),
+                          Text("Total Balance", style: textStyleRegular16px500px),
+                          Text("0 Rs", style: textStyleDarkHeavy24px700),
+                          verticalSpace(10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Amount to be Paid:", style: textStyle12px500w),
+                              Text("0 Rs", style: textStyleRed12px500w),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Amount to be Received:", style: textStyle12px500w),
+                              Text("0 Rs", style: textStyleGreen12px500w),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
+                Positioned(right: 0, child: Image.asset(Images.kImageHome, height: 134.0)),
+              ],
             ),
             Container(
               height: 30.0,
@@ -86,35 +95,41 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Goa Trip"),
-                              Text("2000 Rs."),
+                              Text("Goa Trip", style: textStyleSubText14px600w),
+                              Text("2000 Rs.", style: textStyle14px500w),
                             ],
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("10 people added to the split"),
-                              Text("200 Rs./head"),
+                              Text("10 people added to the split", style: textStyle14px500w),
+                              Text("200 Rs./head", style: textStyle14px500w),
                             ],
                           ),
-                          Text("27 Mar 2022"),
+                          Text("27 Mar 2022", style: textStyle14px500w),
                         ],
                       ),
-                    )
+                    ),
+                    verticalSpace(10.0),
+                    line(),
                   ],
                 ),
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 25.0),
+              margin: EdgeInsets.only(right: 25.0, left: 25.0, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
                     child: Column(
                       children: [
-                        Image.asset(Images.kImageLogin, height: 34.0),
-                        Text("Groups"),
+                        Image.asset(Images.kIconGroup, height: 28.0, width: 28.0),
+                        verticalSpace(5.0),
+                        Text("Groups", style: textStylePrimary14px500w),
                       ],
                     ),
                   ),
@@ -125,8 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       child: Column(
                         children: [
-                          Image.asset(Images.kImageLogin, height: 34.0),
-                          Text("Create Group"),
+                          Image.asset(Images.kIconCreateGroup, height: 60.0),
+                          verticalSpace(10.0),
+                          Text("Create Group", style: textStylePrimary14px500w),
                         ],
                       ),
                     ),
@@ -134,8 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     child: Column(
                       children: [
-                        Image.asset(Images.kImageLogin, height: 34.0),
-                        Text("Account"),
+                        Image.asset(Images.kIconPerson, height: 34.0),
+                        verticalSpace(5.0),
+                        Text("Account", style: textStylePrimary14px500w),
                       ],
                     ),
                   ),
@@ -247,34 +264,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-// void showDetailDialog(BuildContext context) {
-//   AlertDialog alert = AlertDialog(
-//     contentPadding: EdgeInsets.all(0.0),
-//     backgroundColor: Colors.transparent,
-//     content: Wrap(
-//       children: [
-//         Column(
-//           children: [
-//             Container(
-//               height: 310.0,
-//               decoration: BoxDecoration(
-//                 image: DecorationImage(
-//                   image: AssetImage(Images.kImageDialog),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ],
-//     ),
-//   );
-//
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return alert;
-//     },
-//   );
-// }
 }

@@ -9,6 +9,9 @@ class Assets {
   static const String fontsMontserratRegular = 'assets/fonts/montserrat_regular.otf';
   static const String fontsMontserratSemiBold = 'assets/fonts/montserrat_semi_bold.otf';
   static const String fontsMontserratThin = 'assets/fonts/montserrat_thin.otf';
+  static const String imagesIcCreateGroup = 'assets/images/ic_create_group.png';
+  static const String imagesIcGroup = 'assets/images/ic_group.png';
+  static const String imagesIcPerson = 'assets/images/ic_person.png';
   static const String imagesImgDialog = 'assets/images/img_dialog.png';
   static const String imagesImgHome = 'assets/images/img_home.png';
   static const String imagesImgLogin = 'assets/images/img_login.png';

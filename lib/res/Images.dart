@@ -11,5 +11,8 @@ class Images {
   static const kImageDialog = base + "img_dialog.png";
   static const kImageNote = base + "img_note.png";
   static const kImageSplitBill = base + "img_split_bill.png";
+  static const kIconCreateGroup = base + "ic_create_group.png";
+  static const kIconGroup = base + "ic_group.png";
+  static const kIconPerson = base + "ic_person.png";
 
 }
