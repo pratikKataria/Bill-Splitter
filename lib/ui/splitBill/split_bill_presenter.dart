@@ -27,7 +27,6 @@ class SplitBillPresenter {
     }
   }
 
-
   Future<void> createGroup(SplitRequest request) async {
     String uid = (await AuthUser().getCurrentUser()).userCredentials.uid;
     String gid = idGenerator();

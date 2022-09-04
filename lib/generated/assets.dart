@@ -16,6 +16,7 @@ class Assets {
   static const String imagesImgDialog = 'assets/images/img_dialog.png';
   static const String imagesImgHome = 'assets/images/img_home.png';
   static const String imagesImgLogin = 'assets/images/img_login.png';
+  static const String imagesImgLogout = 'assets/images/img_logout.png';
   static const String imagesImgNote = 'assets/images/img_note.png';
   static const String imagesImgSplitBill = 'assets/images/img_split_bill.png';
 

@@ -1,11 +1,16 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
+import 'package:bill_splitter/ui/core/login/login_screen.dart';
+import 'package:bill_splitter/ui/home/home_presenter.dart';
+import 'package:bill_splitter/ui/splitBill/model/split_request.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/user/AuthUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
+
+import 'home_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -14,18 +19,22 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> implements HomeView {
   final subTextStyle = textStyleSubText14px500w;
   final mainTextStyle = textStyle14px500w;
 
   final TextEditingController groupTextController = TextEditingController();
 
   String userName = "";
+  HomePresenter presenter;
+  List<SplitRequest> listOfGroups = [];
 
   @override
   void initState() {
     super.initState();
     getUserName();
+    presenter = HomePresenter(this);
+    presenter.getAllGroups();
   }
 
   Future<void> getUserName() async {
@@ -61,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     verticalSpace(20.0),
                     Container(
-                      height: 130.0,
+                      height: 90.0,
                       width: Utility.screenWidth(context) * 0.9,
                       padding: EdgeInsets.symmetric(horizontal: 30.0),
                       decoration: BoxDecoration(
@@ -73,22 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Total Balance", style: textStyleRegular16px500px),
-                          Text("0 Rs", style: textStyleDarkHeavy24px700),
-                          verticalSpace(10.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Amount to be Paid:", style: textStyle12px500w),
-                              Text("0 Rs", style: textStyleRed12px500w),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Amount to be Received:", style: textStyle12px500w),
-                              Text("0 Rs", style: textStyleGreen12px500w),
-                            ],
-                          ),
+                          Text("${calcTotalBalance()} Rs.", style: textStyleDarkHeavy24px700),
                         ],
                       ),
                     ),
@@ -105,28 +99,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 25.0),
                 child: ListView(
                   children: [
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Goa Trip", style: textStyleSubText14px600w),
-                              Text("2000 Rs.", style: textStyle14px500w),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("10 people added to the split", style: textStyle14px500w),
-                              Text("200 Rs./head", style: textStyle14px500w),
-                            ],
-                          ),
-                          Text("27 Mar 2022", style: textStyle14px500w),
-                        ],
-                      ),
-                    ),
+                    ...listOfGroups
+                        .map((e) => Container(
+                              margin: EdgeInsets.only(bottom: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("${e?.groupName}", style: textStyleSubText14px600w),
+                                      Text("${e?.groupTotal}", style: textStyle14px500w),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("${e?.totalPeople} people added to the split", style: textStyle14px500w),
+                                      Text("${e?.splitPerHead} Rs./head", style: textStyle14px500w),
+                                    ],
+                                  ),
+                                  Text("Group created by ${e?.createdby}", style: textStyle14px500w),
+                                ],
+                              ),
+                            ))
+                        .toList(),
                     verticalSpace(10.0),
                     line(),
                   ],
@@ -162,13 +159,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Image.asset(Images.kIconPerson, height: 34.0),
-                        verticalSpace(5.0),
-                        Text("Account", style: textStylePrimary14px500w),
-                      ],
+                  InkWell(
+                    onTap: () {
+                      logout();
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Image.asset(Images.kIconPerson, height: 34.0),
+                          verticalSpace(5.0),
+                          Text("Account", style: textStylePrimary14px500w),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -178,6 +180,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  int calcTotalBalance() {
+    int total = 0;
+    if (listOfGroups.isNotEmpty) {
+      listOfGroups.forEach((element) {
+        total += element.groupTotal;
+      });
+    }
+    return total;
   }
 
   void _modalBottomSheetMenu(BuildContext context) {
@@ -235,6 +247,61 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
+  void logout() {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (builder) {
+          return Stack(
+            children: [
+              Container(
+                height: Utility.screenHeight(context) * 0.20,
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                margin: const EdgeInsets.only(top: 90.0),
+                decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(24.0),
+                      topLeft: Radius.circular(24.0),
+                    )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${userName}', style: textStyleDarkHeavy24px700),
+                    verticalSpace(28.0),
+                    Center(
+                      child: InkWell(
+                        onTap: () async {
+                          await AuthUser.getInstance().logout();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorPrimaryLight,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          height: 45.0,
+                          width: 200.0,
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Center(child: Text("Logout", style: textStylePrimary16px700w)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 0.0,
+                child: Image.asset(Images.kImageLogout, height: 150.0),
+              ),
+            ],
+          );
+        });
+  }
+
   Container emailField() {
     return Container(
       height: 38,
@@ -272,5 +339,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void onAllGroupsFetched(List<SplitRequest> listOfUsers) {
+    listOfGroups.clear();
+    listOfGroups.addAll(listOfUsers);
+    setState(() {});
+  }
+
+  @override
+  void onError(String message) {
+    Utility.showErrorToastB(context, message);
   }
 }
