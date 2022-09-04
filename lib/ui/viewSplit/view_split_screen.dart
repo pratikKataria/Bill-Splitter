@@ -7,20 +7,19 @@ import 'package:bill_splitter/ui/splitBill/model/split_request.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_presenter.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_view.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
-import 'package:bill_splitter/user/AuthUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
-class SplitBillScreen extends StatefulWidget {
-  final String groupName;
+class ViewScreen extends StatefulWidget {
+  final SplitRequest e;
 
-  const SplitBillScreen(this.groupName, {Key key}) : super(key: key);
+  const ViewScreen(this.e, {Key key}) : super(key: key);
 
   @override
-  State<SplitBillScreen> createState() => _SplitBillScreenState();
+  State<ViewScreen> createState() => _ViewScreenState();
 }
 
-class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillView {
+class _ViewScreenState extends State<ViewScreen> implements SplitBillView {
   final subTextStyle = textStyleSubText12px500w;
   final mainTextStyle = textStyle12px500w;
 
@@ -37,16 +36,6 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
   void initState() {
     super.initState();
     presenter = SplitBillPresenter(this);
-    presenter.getAllUsers();
-    addGroupMetaData();
-  }
-
-  Future<void> addGroupMetaData() async {
-    splitRequest.groupName = widget?.groupName;
-    splitRequest.createdby = (await AuthUser().getCurrentUser()).userCredentials.name;
-    splitRequest.totalPeople = 1;
-    splitRequest.groupTotal = 0;
-    splitRequest.splitPerHead = 0;
   }
 
   @override
@@ -73,8 +62,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           verticalSpace(10.0),
-                          Text("${widget.groupName}", style: textStyle14px500w),
-                          Text("Created by you", style: textStyle14px500w),
+                          Text("Created by ${widget.e.createdby}", style: textStyle14px500w),
                         ],
                       ),
                     ),
@@ -94,7 +82,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Total bill", style: textStyleRegular16px500px),
-                            Text("${calculateTotalBill()} Rs", style: textStyleDarkHeavy24px700),
+                            Text("${widget.e.groupTotal} Rs", style: textStyleDarkHeavy24px700),
                           ],
                         ),
                       ),
@@ -110,7 +98,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
               children: [
                 horizontalSpace(45.0),
                 Text("Split between ", style: textStyleRegular16px500px),
-                Text("${((firends?.length) ?? 0)}", style: textStyleDarkHeavy24px700),
+                Text("${widget.e.totalPeople}", style: textStyleDarkHeavy24px700),
                 Text(" People", style: textStyleRegular16px500px),
               ],
             ),
@@ -120,8 +108,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                 horizontalSpace(45.0),
                 Text("Split per head", style: textStyle12px500w),
                 horizontalSpace(6.0),
-                Text("${(calculateTotalBill() / ((firends?.length ?? 1))).toStringAsFixed(2)} Rs.",
-                    style: textStyleDarkHeavy18px700),
+                Text("${widget.e.splitPerHead} Rs.", style: textStyleDarkHeavy18px700),
               ],
             ),
             verticalSpace(25.0),
@@ -130,12 +117,6 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                 horizontalSpace(45.0),
                 Text("Friends", style: mainTextStyle),
                 Spacer(),
-                InkWell(
-                    onTap: () {
-                      _modalBottomSheetMenu(context);
-                    },
-                    child: Text("+ New", style: textStyleRedRegular14px700w)),
-                horizontalSpace(20.0),
               ],
             ),
             verticalSpace(20.0),
@@ -144,7 +125,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                 margin: EdgeInsets.only(left: 40.0),
                 child: ListView(
                   children: [
-                    ...firends
+                    ...widget.e.guestFriend
                         .map((e) => Container(
                               padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
                               margin: EdgeInsets.only(bottom: 20.0),
@@ -159,17 +140,6 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("${e?.name ?? ""}", style: textStyleDark16px600w),
-                                      InkWell(
-                                        onTap: () async {
-                                          List<Expenses> exp = await Navigator.push(
-                                              context, MaterialPageRoute(builder: (context) => AddExpenseScreen(e.name)));
-                                          if (e.expenses == null) e.expenses = [];
-                                          e.expenses.addAll(exp);
-                                          print("${e.expenses}");
-                                          setState(() {});
-                                        },
-                                        child: Text("+ Expense", style: textStyleSecondary12px700w),
-                                      ),
                                     ],
                                   ),
                                   ...e?.expenses
@@ -177,12 +147,11 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text("${ex.label}", style: textStyle12px500w),
-                                                  Text("${ex.cost} / ${ex.qty} Qty", style: textStyleSecondary12px700w),
+                                                  Text("${ex.cost} Rs. / ${ex.qty} Qty", style: textStyleSecondary12px700w),
                                                 ],
                                               ))
                                           ?.toList() ??
                                       [],
-
                                   verticalSpace(5.0),
                                   line(),
                                   verticalSpace(5.0),
@@ -190,9 +159,10 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                     children: [
                                       Text("Per head", style: textStyle12px500w),
                                       Spacer(),
-                                      Text("${calculateTotalBill()/(firends.length)} Rs.", style: textStyleSecondary12px700w),
+                                      Text("${widget?.e?.splitPerHead} Rs.", style: textStyleSecondary12px700w),
                                     ],
                                   ),
+
                                 ],
                               ),
                             ))
@@ -201,28 +171,6 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                 ),
               ),
             ),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  splitRequest.guestFriend = firends;
-                  splitRequest.groupTotal = calculateTotalBill();
-                  splitRequest.splitPerHead = double.parse((calculateTotalBill() / (firends.length)).toStringAsFixed(2));
-                  splitRequest.totalPeople = firends.length + 1;
-                  presenter.createGroup(splitRequest);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.colorPrimaryLight,
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  height: 45.0,
-                  width: 200.0,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Center(child: Text("Submit Request", style: textStylePrimary16px700w)),
-                ),
-              ),
-            ),
-            verticalSpace(10.0),
           ],
         ),
       ),
@@ -256,7 +204,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Split the bill", style: textStyle14px500w),
+              Text("${widget?.e?.groupName}", style: textStyle14px500w),
               Text("Enjoy together, happy to share", style: textStyle12px500w),
             ],
           ),

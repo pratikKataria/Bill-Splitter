@@ -5,6 +5,7 @@ import 'package:bill_splitter/ui/core/login/login_screen.dart';
 import 'package:bill_splitter/ui/home/home_presenter.dart';
 import 'package:bill_splitter/ui/splitBill/model/split_request.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
+import 'package:bill_splitter/ui/viewSplit/view_split_screen.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/user/AuthUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
@@ -100,27 +101,32 @@ class _HomeScreenState extends State<HomeScreen> implements HomeView {
                 child: ListView(
                   children: [
                     ...listOfGroups
-                        .map((e) => Container(
-                              margin: EdgeInsets.only(bottom: 20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("${e?.groupName}", style: textStyleSubText14px600w),
-                                      Text("${e?.groupTotal}", style: textStyle14px500w),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("${e?.totalPeople} people added to the split", style: textStyle14px500w),
-                                      Text("${e?.splitPerHead} Rs./head", style: textStyle14px500w),
-                                    ],
-                                  ),
-                                  Text("Group created by ${e?.createdby}", style: textStyle14px500w),
-                                ],
+                        .map((e) => InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewScreen(e)));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 20.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("${e?.groupName}", style: textStyleSubText14px600w),
+                                        Text("${e?.groupTotal}", style: textStyle14px500w),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("${e?.totalPeople} people added to the split", style: textStyle14px500w),
+                                        Text("${e?.splitPerHead} Rs./head", style: textStyle14px500w),
+                                      ],
+                                    ),
+                                    Text("Group created by ${e?.createdby}", style: textStyle14px500w),
+                                  ],
+                                ),
                               ),
                             ))
                         .toList(),
