@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             UserNoteWidget(),
-            verticalSpace(10.0),
+            verticalSpace(5.0),
             Stack(
               children: [
                 Column(

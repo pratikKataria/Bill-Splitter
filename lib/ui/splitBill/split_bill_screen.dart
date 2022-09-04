@@ -14,8 +14,8 @@ class SplitBillScreen extends StatefulWidget {
 }
 
 class _SplitBillScreenState extends State<SplitBillScreen> {
-  final subTextStyle = textStyleSubText14px500w;
-  final mainTextStyle = textStyle14px500w;
+  final subTextStyle = textStyleSubText12px500w;
+  final mainTextStyle = textStyle12px500w;
 
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController otpTextController = TextEditingController();
@@ -29,9 +29,9 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             UserNoteWidget(),
-            verticalSpace(20.0),
+            verticalSpace(8.0),
             header(),
-            verticalSpace(25.0),
+            verticalSpace(12.0),
             Stack(
               children: [
                 Column(
@@ -49,7 +49,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                         ],
                       ),
                     ),
-                    verticalSpace(20.0),
+                    verticalSpace(15.0),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
@@ -85,19 +85,48 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                 Text(" People", style: textStyleRegular16px500px),
               ],
             ),
-            verticalSpace(20.0),
+            verticalSpace(25.0),
             Row(
               children: [
                 horizontalSpace(45.0),
-                Text("Expenses", style: mainTextStyle),
+                Text("Friends", style: mainTextStyle),
                 Spacer(),
-                Text("Add New", style: textStyleRedRegular14px700w),
+                InkWell(
+                    onTap: () {
+                      _modalBottomSheetMenu(context);
+                    },
+                    child: Text("Add New", style: textStyleRedRegular14px700w)),
                 horizontalSpace(20.0),
               ],
             ),
+            verticalSpace(20.0),
             Expanded(
-              child: ListView(
-                children: [],
+              child: Container(
+                margin: EdgeInsets.only(left: 40.0),
+                child: ListView(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.colorSecondaryLight,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Deepak (400 Rs.)", style: textStyle14px500w),
+                              Text("+ Expense", style: textStyleSecondary12px700w),
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             Center(
@@ -152,8 +181,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
           return Stack(
             children: [
               Container(
-                height: Utility.screenHeight(context) * 0.30,
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                height: Utility.screenHeight(context) * 0.60,
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                 margin: const EdgeInsets.only(top: 90.0),
                 decoration: BoxDecoration(
                     color: AppColors.white,
@@ -162,31 +191,71 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                       topLeft: Radius.circular(24.0),
                     )),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
+                    Text('Add Friends', style: textStyle20px600w),
+                    verticalSpace(20.0),
+                    Text('Add from list', style: textStyle14px500w),
+                    verticalSpace(10.0),
+                    Container(
+                      height: 40.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
                         children: [
-                          horizontalSpace(10.0),
-                          Text('Create Group', style: textStyleDarkHeavy24px700),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                            decoration: BoxDecoration(
+                                color: AppColors.colorPrimaryLight, borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                            child: Center(child: Text("Anil", style: textStyle12px500w)),
+                          )
                         ],
                       ),
                     ),
-                    verticalSpace(28.0),
+                    verticalSpace(20.0),
+                    Text('Add by name', style: textStyle14px500w),
+                    verticalSpace(10.0),
                     emailField(),
-                    verticalSpace(28.0),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.colorPrimaryLight,
-                          borderRadius: BorderRadius.circular(12.0),
+                    verticalSpace(20.0),
+                    Text('Added', style: textStyle14px500w),
+                    verticalSpace(10.0),
+                    Container(
+                      height: 40.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.colorSecondaryLight,
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  Text("Anil", style: textStyle12px500w),
+                                  horizontalSpace(10.0),
+                                  Icon(Icons.remove_circle_outline_rounded, color: AppColors.colorSecondary, size: 24.0)
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    verticalSpace(20.0),
+                    Center(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorPrimaryLight,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          height: 45.0,
+                          width: 200.0,
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Center(child: Text("Create", style: textStylePrimary16px700w)),
                         ),
-                        height: 45.0,
-                        width: 200.0,
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Center(child: Text("Create")),
                       ),
                     ),
                   ],
@@ -194,7 +263,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
               ),
               Positioned(
                 right: 0.0,
-                child: Image.asset(Images.kImageDialog, height: 150.0),
+                child: Image.asset(Images.kImageAddFriend, height: 150.0),
               ),
             ],
           );
@@ -213,9 +282,9 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 75,
-            margin: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text("Email", style: mainTextStyle),
+            width: 80,
+            margin: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text("Add Name", style: mainTextStyle),
           ),
           Expanded(
             child: TextFormField(
@@ -227,7 +296,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
               style: subTextStyle,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Enter email or phone",
+                hintText: "Enter name ",
                 hintStyle: subTextStyle,
                 isDense: true,
                 suffixStyle: TextStyle(color: AppColors.textColor),
