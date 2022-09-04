@@ -3,18 +3,17 @@ import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
-import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 
-class AddFriendScreen extends StatefulWidget {
-  const AddFriendScreen({Key key}) : super(key: key);
+class AddExpenseScreen extends StatefulWidget {
+  const AddExpenseScreen({Key key}) : super(key: key);
 
   @override
-  State<AddFriendScreen> createState() => _AddFriendScreenState();
+  State<AddExpenseScreen> createState() => _AddExpenseScreenState();
 }
 
-class _AddFriendScreenState extends State<AddFriendScreen> {
+class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final subTextStyle = textStyleSubText14px500w;
   final mainTextStyle = textStyle14px500w;
 
@@ -29,34 +28,160 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserNoteWidget(),
             verticalSpace(20.0),
             header(),
-            verticalSpace(25.0),
-
-            verticalSpace(2.0),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                horizontalSpace(45.0),
-                Text("Split between ", style: textStyleRegular16px500px),
-                Text("0", style: textStyleDarkHeavy24px700),
-                Text(" People", style: textStyleRegular16px500px),
-              ],
-            ),
-            verticalSpace(20.0),
+            Container(margin: EdgeInsets.only(left: 40.0, top: 20.0), child: Text("Anil", style: textStyleDarkHeavy24px700)),
+            verticalSpace(10.0),
             Row(
               children: [
-                horizontalSpace(45.0),
+                horizontalSpace(40.0),
                 Text("Expenses", style: mainTextStyle),
                 Spacer(),
-                Text("Add New", style: textStyleRedRegular14px700w),
-                horizontalSpace(20.0),
+                InkWell(
+                    onTap: () {
+                      _modalBottomSheetMenu(context);
+                    },
+                    child: Text("Add New", style: textStyleRedRegular14px700w)),
               ],
             ),
             Expanded(
               child: ListView(
-                children: [],
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 20.0),
+                    margin: EdgeInsets.only(left: 40.0, top: 20.0, bottom: 20.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.colorSecondaryLight,
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: AppColors.colorPrimaryLight,
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 40.0,
+                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Text("Title", style: mainTextStyle),
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  obscureText: false,
+                                  textAlign: TextAlign.left,
+                                  maxLines: 1,
+                                  textCapitalization: TextCapitalization.none,
+                                  style: subTextStyle,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Enter title",
+                                    hintStyle: subTextStyle,
+                                    isDense: true,
+                                    suffixStyle: TextStyle(color: AppColors.textColor),
+                                  ),
+                                  onChanged: (String val) {
+                                    /*      widget.onTextChange(val);
+                        resetErrorOnTyping();*/
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(10.0),
+                        verticalSpace(10.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 60.0,
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                decoration: BoxDecoration(
+                                  color: AppColors.colorPrimaryLight,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    verticalSpace(8.0),
+                                    Text("Quantity", style: mainTextStyle),
+                                    Expanded(
+                                      child: TextFormField(
+                                        obscureText: false,
+                                        textAlign: TextAlign.left,
+                                        maxLines: 1,
+                                        textCapitalization: TextCapitalization.none,
+                                        style: subTextStyle,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: "Enter qty",
+                                          hintStyle: subTextStyle,
+                                          isDense: true,
+                                          suffixStyle: TextStyle(color: AppColors.textColor),
+                                        ),
+                                        onChanged: (String val) {
+                                          /*      widget.onTextChange(val);
+                              resetErrorOnTyping();*/
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            horizontalSpace(10.0),
+                            Expanded(
+                              child: Container(
+                                height: 60.0,
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                decoration: BoxDecoration(
+                                  color: AppColors.colorPrimaryLight,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    verticalSpace(8.0),
+                                    Text("Price", style: mainTextStyle),
+                                    Expanded(
+                                      child: TextFormField(
+                                        obscureText: false,
+                                        textAlign: TextAlign.left,
+                                        maxLines: 1,
+                                        textCapitalization: TextCapitalization.none,
+                                        style: subTextStyle,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: "Enter Price",
+                                          hintStyle: subTextStyle,
+                                          isDense: true,
+                                          suffixStyle: TextStyle(color: AppColors.textColor),
+                                        ),
+                                        onChanged: (String val) {
+                                          /*      widget.onTextChange(val);
+                        resetErrorOnTyping();*/
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             Center(
@@ -197,5 +322,4 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
           );
         });
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
+import 'package:bill_splitter/ui/addExpense/add_expense.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
 import 'package:bill_splitter/ui/widgets/user_note_widget.dart';
 import 'package:bill_splitter/util/Utility.dart';
@@ -118,10 +119,14 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Deepak (400 Rs.)", style: textStyle14px500w),
-                              Text("+ Expense", style: textStyleSecondary12px700w),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddExpenseScreen()));
+                                },
+                                child: Text("+ Expense", style: textStyleSecondary12px700w),
+                              ),
                             ],
                           ),
-
                         ],
                       ),
                     )
