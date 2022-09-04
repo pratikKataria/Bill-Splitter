@@ -34,6 +34,17 @@ class SplitBillPresenter {
 
     DatabaseReference ref = FirebaseDatabase.instance.ref("Groups/$uid/$gid");
 
+    List<DatabaseReference> refList = [];
+    request.guestFriend.forEach((element) {
+       if (element.uid != null) {
+         refList.add(FirebaseDatabase.instance.ref("Groups/${element.uid}/$gid"));
+       }
+    });
+
+    refList.forEach((element) {
+      element.set(request.toJson());
+    });
+
     ref.set(request.toJson())
         .then((value) {})
         .onError((error, stackTrace) {});
