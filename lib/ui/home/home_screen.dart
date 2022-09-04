@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Container(
                 height: Utility.screenHeight(context) * 0.30,
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
                 margin: const EdgeInsets.only(top: 90.0),
                 decoration: BoxDecoration(
                     color: AppColors.white,
@@ -184,31 +184,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       topLeft: Radius.circular(24.0),
                     )),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          horizontalSpace(10.0),
-                          Text('Create Group', style: textStyleDarkHeavy24px700),
-                        ],
-                      ),
-                    ),
+                    Text('Create Group', style: textStyleDarkHeavy24px700),
                     verticalSpace(28.0),
                     emailField(),
                     verticalSpace(28.0),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.colorPrimaryLight,
-                          borderRadius: BorderRadius.circular(12.0),
+                    Center(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorPrimaryLight,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          height: 45.0,
+                          width: 200.0,
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Center(child: Text("Create", style: textStylePrimary16px700w)),
                         ),
-                        height: 45.0,
-                        width: 200.0,
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Center(child: Text("Create")),
                       ),
                     ),
                   ],
@@ -235,9 +229,9 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 75,
-            margin: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text("Email", style: mainTextStyle),
+            width: 50,
+            margin: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text("Group", style: mainTextStyle),
           ),
           Expanded(
             child: TextFormField(
@@ -249,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: subTextStyle,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Enter email or phone",
+                hintText: "Enter group name",
                 hintStyle: subTextStyle,
                 isDense: true,
                 suffixStyle: TextStyle(color: AppColors.textColor),
