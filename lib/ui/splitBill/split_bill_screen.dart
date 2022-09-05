@@ -37,7 +37,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
   void initState() {
     super.initState();
     presenter = SplitBillPresenter(this);
-    presenter.getAllUsers();
+    presenter.getAllUsers(context);
     addGroupMetaData();
   }
 
@@ -120,7 +120,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                 horizontalSpace(45.0),
                 Text("Split per head", style: textStyle12px500w),
                 horizontalSpace(6.0),
-                Text("${(calculateTotalBill() / ((firends?.length ?? 1))).toStringAsFixed(2)} Rs.",
+                Text("${(calculateTotalBill() / ((firends?.length == 0 ? 1 : firends.length))).toStringAsFixed(2)} Rs.",
                     style: textStyleDarkHeavy18px700),
               ],
             ),
@@ -182,7 +182,6 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                               ))
                                           ?.toList() ??
                                       [],
-
                                   verticalSpace(5.0),
                                   line(),
                                   verticalSpace(5.0),
@@ -190,7 +189,9 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                     children: [
                                       Text("Per head", style: textStyle12px500w),
                                       Spacer(),
-                                      Text("${calculateTotalBill()/(firends.length)} Rs.", style: textStyleSecondary12px700w),
+                                      Text(
+                                          "${(calculateTotalBill() / ((firends?.length == 0 ? 1 : firends.length))).toStringAsFixed(2)} Rs.",
+                                          style: textStyleSecondary12px700w),
                                     ],
                                   ),
                                 ],
@@ -207,8 +208,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                   splitRequest.guestFriend = firends;
                   splitRequest.groupTotal = calculateTotalBill();
                   splitRequest.splitPerHead = double.parse((calculateTotalBill() / (firends.length)).toStringAsFixed(2));
-                  splitRequest.totalPeople = firends.length + 1;
-                  presenter.createGroup(splitRequest);
+                  splitRequest.totalPeople = firends.length;
+                  presenter.createGroup(context, splitRequest);
                 },
                 child: Container(
                   decoration: BoxDecoration(

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bill Splitter',
+      title: 'Split It ',
       home: checkAuthUser(authResult),
       theme: new ThemeData(
         primaryColor: Colors.white,

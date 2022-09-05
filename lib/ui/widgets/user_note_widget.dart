@@ -20,7 +20,7 @@ class UserNoteWidget extends StatelessWidget {
           horizontalSpace(10.0),
           Expanded(
             child: Text(
-              "User with Bill splitter account would be able To see their split others are added as guest",
+              "User with Split It account would be able To see their split, Others user are added as guest",
               style: textStyleSecondary12px600w,
             ),
           )

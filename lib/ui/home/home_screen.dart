@@ -98,41 +98,44 @@ class _HomeScreenState extends State<HomeScreen> implements HomeView {
             Expanded(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 25.0),
-                child: ListView(
-                  children: [
-                    ...listOfGroups
-                        .map((e) => InkWell(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewScreen(e)));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 20.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("${e?.groupName}", style: textStyleSubText14px600w),
-                                        Text("${e?.groupTotal}", style: textStyle14px500w),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("${e?.totalPeople} people added to the split", style: textStyle14px500w),
-                                        Text("${e?.splitPerHead} Rs./head", style: textStyle14px500w),
-                                      ],
-                                    ),
-                                    Text("Group created by ${e?.createdby}", style: textStyle14px500w),
-                                  ],
+                child: RefreshIndicator(
+                  onRefresh: refreshList,
+                  child: ListView(
+                    children: [
+                      ...listOfGroups
+                          .map((e) => InkWell(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewScreen(e)));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 20.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("${e?.groupName}", style: textStyleSubText14px600w),
+                                          Text("${e?.groupTotal}", style: textStyle14px500w),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("${e?.totalPeople} people added to the split", style: textStyle14px500w),
+                                          Text("${e?.splitPerHead} Rs./head", style: textStyleSecondary12px700w),
+                                        ],
+                                      ),
+                                      Text("Group created by ${e?.createdby}", style: textStyle14px500w),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ))
-                        .toList(),
-                    verticalSpace(10.0),
-                    line(),
-                  ],
+                              ))
+                          .toList(),
+                      verticalSpace(10.0),
+                      line(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -229,6 +232,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeView {
                       Center(
                         child: InkWell(
                           onTap: () {
+                            Navigator.pop(context);
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => SplitBillScreen(groupTextController.text.toString())));
                           },
@@ -354,12 +358,21 @@ class _HomeScreenState extends State<HomeScreen> implements HomeView {
   @override
   void onAllGroupsFetched(List<SplitRequest> listOfUsers) {
     listOfGroups.clear();
-    listOfGroups.addAll(listOfUsers);
+    listOfUsers.forEach((element) {
+      listOfGroups.insert(0, element);
+    });
     setState(() {});
   }
 
   @override
   void onError(String message) {
     Utility.showErrorToastB(context, message);
+  }
+
+  Future<Null> refreshList() async {
+    // refreshKey.currentState?.show(atTop: false);
+    await Future.delayed(Duration(seconds: 2));
+    presenter.getAllGroups();
+    return null;
   }
 }
