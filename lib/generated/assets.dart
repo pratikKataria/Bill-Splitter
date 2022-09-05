@@ -2,6 +2,8 @@
 class Assets {
   Assets._();
 
+  static const String assetsLoading = 'assets/loading.json';
+  static const String assetsSplitLogo = 'assets/split_logo.json';
   static const String fontsMontserratBold = 'assets/fonts/montserrat_bold.otf';
   static const String fontsMontserratExtraBold = 'assets/fonts/montserrat_extra_bold.otf';
   static const String fontsMontserratLight = 'assets/fonts/montserrat_light.otf';

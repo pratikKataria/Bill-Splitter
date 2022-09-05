@@ -35,6 +35,6 @@ abstract class AppColors {
   static const shimmerBackgroundColor = Color(0xFFEAEAEA);
 
   static const lineColor = Color(0xFFD5DADC);
-  static const inputFieldBackgroundColor = Color(0xFFF6F6F6);
+  static const inputFieldBackgroundColor = Color(0xFFEFEFEF);
 
 }

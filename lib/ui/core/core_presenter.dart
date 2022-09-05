@@ -1,5 +1,7 @@
 import 'package:bill_splitter/ui/core/signup/model/user_response.dart';
+import 'package:bill_splitter/util/Dialogs.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'core_view.dart';
 
@@ -11,9 +13,11 @@ class CorePresenter {
 
   List<UserResponse> listOfUsers = [];
 
-  Future<void> loginUser(String email) async {
+  Future<void> loginUser(BuildContext context, String email) async {
     final ref = FirebaseDatabase.instance.ref();
+    Dialogs.showLoader(context, "Logging in...", "Login");
     final snapshot = await ref.child('Users/').get();
+    await Future.delayed(Duration(milliseconds: 600), () => Dialogs.hideLoader(context));
     listOfUsers.clear();
     if (snapshot.exists) {
       Map map = snapshot.value;
@@ -49,7 +53,7 @@ class CorePresenter {
     }
   }
 
-  Future<void> createUser(String name, String email, String password) async {
+  Future<void> createUser(BuildContext context, String name, String email, String password) async {
     String uid = idGenerator();
     DatabaseReference ref = FirebaseDatabase.instance.ref("Users/$uid");
 
@@ -61,12 +65,14 @@ class CorePresenter {
     }
 
     if (isNewUser) {
+      Dialogs.showLoader(context, "Creating user..", "Sign up");
       ref.set({
         "name": name,
         "email": email,
         "password": password,
         "uid": uid,
-      }).then((value) {
+      }).then((value) async {
+        await Future.delayed(Duration(milliseconds: 600), () => Dialogs.hideLoader(context));
         UserResponse r = UserResponse()
           ..uid = uid
           ..name = name
@@ -76,6 +82,7 @@ class CorePresenter {
         _v.onNewUserCreated(r);
       }).onError((error, stackTrace) {});
     } else {
+      await Future.delayed(Duration(milliseconds: 600), () => Dialogs.hideLoader(context));
       _v.onError("Already a user, try different email");
     }
   }

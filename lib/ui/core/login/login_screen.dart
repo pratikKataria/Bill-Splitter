@@ -33,53 +33,57 @@ class _LoginScreenState extends State<LoginScreen> implements CoreView {
   void initState() {
     super.initState();
     presenter = CorePresenter(this);
-
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Container(
           margin: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
+          child: ListView(
             children: [
-              Image.asset(Images.kImageLogin, height: 250),
-              Text("Welcome Back!", style: textStylePrimary22px700w),
-              verticalSpace(5.0),
-              Text("Hassle free bill management", style: textStyleSubText12px600w),
-              verticalSpace(60.0),
-              emailField(),
-              verticalSpace(10.0),
-              passwordField(),
-              verticalSpace(20.0),
-              InkWell(
-                onTap: () {
-                   presenter.loginUser(emailTextController.text.toString());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.colorPrimaryLight,
-                    borderRadius: BorderRadius.circular(12.0),
+              Column(
+                children: [
+                  Image.asset(Images.kImageLogin, height: 250),
+                  Text("Welcome Back!", style: textStylePrimary22px700w),
+                  verticalSpace(5.0),
+                  Text("Hassle free bill management", style: textStyleSubText12px600w),
+                  verticalSpace(60.0),
+                  emailField(),
+                  verticalSpace(10.0),
+                  passwordField(),
+                  verticalSpace(20.0),
+                  InkWell(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      presenter.loginUser(context, emailTextController.text.toString());
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.colorPrimaryLight,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      height: 45.0,
+                      width: 200.0,
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Center(child: Text("Login", style: textStylePrimary16px700w)),
+                    ),
                   ),
-                  height: 45.0,
-                  width: 200.0,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Center(child: Text("Login", style: textStylePrimary16px700w)),
-                ),
-              ),
-              verticalSpace(10.0),
-              InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
-                },
-                child: Container(
-                  height: 25.0,
-                  width: 150.0,
-                  child: Center(child: Text("Create Account", style: textStyle12px500w)),
-                ),
+                  verticalSpace(10.0),
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                      child: Center(child: Text("Create Account", style: textStyle12px500w)),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -154,6 +158,7 @@ class _LoginScreenState extends State<LoginScreen> implements CoreView {
               maxLines: 1,
               textCapitalization: TextCapitalization.none,
               style: subTextStyle,
+              obscureText: true,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: "Enter password",
@@ -174,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> implements CoreView {
 
   @override
   Future<void> onNewUserCreated(UserResponse r) async {
-    Utility.showSuccessToastB(context, "New Id Created");
+    Utility.showSuccessToastB(context, "Logged in successfully");
     CurrentUser currentUser = CurrentUser();
     currentUser.userCredentials = r;
     AuthUser.getInstance().login(currentUser);
@@ -185,6 +190,6 @@ class _LoginScreenState extends State<LoginScreen> implements CoreView {
 
   @override
   void onError(String message) {
-    Utility.showErrorToastB(context, message);
+    Utility.showErrorToastC(context, message);
   }
 }

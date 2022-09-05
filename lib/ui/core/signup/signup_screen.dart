@@ -7,6 +7,7 @@ import 'package:bill_splitter/ui/core/login/login_screen.dart';
 import 'package:bill_splitter/ui/core/signup/model/user_response.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
 import 'package:bill_splitter/user/AuthUser.dart';
+import 'package:bill_splitter/user/CurrentUser.dart';
 import 'package:bill_splitter/util/Utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,51 +40,56 @@ class _SignupScreenState extends State<SignupScreen> implements CoreView {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            children: [
-              Image.asset(Images.kImageLogin, height: 250),
-              Text("Welcome", style: textStylePrimary22px700w),
-              verticalSpace(5.0),
-              Text("Hassle free bill management", style: textStyleSubText12px600w),
-              verticalSpace(20.0),
-              nameField(),
-              verticalSpace(20.0),
-              emailField(),
-              verticalSpace(20.0),
-              passwordField(),
-              verticalSpace(20.0),
-              InkWell(
-                onTap: () {
-                  presenter.createUser(nameTextController.text.toString(), emailTextController.text.toString(), otpTextController.text.toString());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.colorPrimaryLight,
-                    borderRadius: BorderRadius.circular(12.0),
+        resizeToAvoidBottomInset: true,
+        body: ListView(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  Image.asset(Images.kImageLogin, height: 250),
+                  Text("Welcome", style: textStylePrimary22px700w),
+                  verticalSpace(5.0),
+                  Text("Hassle free bill management", style: textStyleSubText12px600w),
+                  verticalSpace(20.0),
+                  nameField(),
+                  verticalSpace(20.0),
+                  emailField(),
+                  verticalSpace(20.0),
+                  passwordField(),
+                  verticalSpace(20.0),
+                  InkWell(
+                    onTap: () {
+                      presenter.createUser(context, nameTextController.text.toString(), emailTextController.text.toString(), otpTextController.text.toString());
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.colorPrimaryLight,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      height: 45.0,
+                      width: 200.0,
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Center(child: Text("Signup", style: textStylePrimary16px700w)),
+                    ),
                   ),
-                  height: 45.0,
-                  width: 200.0,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Center(child: Text("Signup", style: textStylePrimary16px700w)),
-                ),
+                  verticalSpace(10.0),
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: 25.0,
+                      width: 150.0,
+                      child: Center(child: Text("Login", style: textStyle12px500w)),
+                    ),
+                  ),
+                ],
               ),
-              verticalSpace(10.0),
-              InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  height: 25.0,
-                  width: 150.0,
-                  child: Center(child: Text("Login", style: textStyle12px500w)),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -197,6 +203,7 @@ class _SignupScreenState extends State<SignupScreen> implements CoreView {
               maxLines: 1,
               textCapitalization: TextCapitalization.none,
               style: subTextStyle,
+              obscureText: true,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: "Enter password",
@@ -218,7 +225,7 @@ class _SignupScreenState extends State<SignupScreen> implements CoreView {
   @override
   Future<void> onNewUserCreated(UserResponse r) async {
      Utility.showSuccessToastB(context, "New Id Created");
-     var currentUser = await AuthUser.getInstance().getCurrentUser();
+     CurrentUser currentUser = CurrentUser();
      currentUser.userCredentials = r;
      AuthUser.getInstance().login(currentUser);
 
@@ -229,6 +236,6 @@ class _SignupScreenState extends State<SignupScreen> implements CoreView {
 
   @override
   void onError(String message) {
-    Utility.showErrorToastB(context, message);
+    Utility.showErrorToastC(context, message);
   }
 }

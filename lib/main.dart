@@ -31,6 +31,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bill Splitter',
       home: checkAuthUser(authResult),
+      theme: new ThemeData(
+        primaryColor: Colors.white,
+        pageTransitionsTheme: PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
+      ),
     );
   }
   checkAuthUser(authResult) {
