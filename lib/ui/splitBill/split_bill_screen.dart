@@ -87,7 +87,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                         padding: EdgeInsets.symmetric(horizontal: 30.0),
                         decoration: BoxDecoration(
                           color: AppColors.colorPrimaryLight,
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24.0), topLeft: Radius.circular(24.0)),
+                          borderRadius:
+                              BorderRadius.only(bottomLeft: Radius.circular(24.0), topLeft: Radius.circular(24.0)),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -161,8 +162,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                       Text("${e?.name ?? ""}", style: textStyleDark16px600w),
                                       InkWell(
                                         onTap: () async {
-                                          List<Expenses> exp = await Navigator.push(
-                                              context, MaterialPageRoute(builder: (context) => AddExpenseScreen(e.name)));
+                                          List<Expenses> exp = await Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) => AddExpenseScreen(e.name)));
                                           if (e.expenses == null) e.expenses = [];
                                           e.expenses.addAll(exp);
                                           print("${e.expenses}");
@@ -191,7 +192,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                                       Spacer(),
                                       Text(
                                           "${(calculateTotalBill() / ((firends?.length == 0 ? 1 : firends.length))).toStringAsFixed(2)} Rs.",
-                                          style: textStyleSecondary12px700w),
+                                          style: textStylePrimary14px600w),
                                     ],
                                   ),
                                 ],
@@ -207,7 +208,8 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
                 onTap: () {
                   splitRequest.guestFriend = firends;
                   splitRequest.groupTotal = calculateTotalBill();
-                  splitRequest.splitPerHead = double.parse((calculateTotalBill() / (firends.length)).toStringAsFixed(2));
+                  splitRequest.splitPerHead =
+                      double.parse((calculateTotalBill() / (firends.length)).toStringAsFixed(2));
                   splitRequest.totalPeople = firends.length;
                   presenter.createGroup(context, splitRequest);
                 },
@@ -252,7 +254,11 @@ class _SplitBillScreenState extends State<SplitBillScreen> implements SplitBillV
       margin: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          Icon(Icons.arrow_back_ios),
+          InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios)),
           horizontalSpace(10.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

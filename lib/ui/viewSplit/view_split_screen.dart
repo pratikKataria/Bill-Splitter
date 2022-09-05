@@ -159,7 +159,7 @@ class _ViewScreenState extends State<ViewScreen> implements SplitBillView {
                                     children: [
                                       Text("Per head", style: textStyle12px500w),
                                       Spacer(),
-                                      Text("${widget?.e?.splitPerHead} Rs.", style: textStyleSecondary12px700w),
+                                      Text("${widget?.e?.splitPerHead} Rs.", style: textStylePrimary14px600w),
                                     ],
                                   ),
 
@@ -199,7 +199,11 @@ class _ViewScreenState extends State<ViewScreen> implements SplitBillView {
       margin: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          Icon(Icons.arrow_back_ios),
+          InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios)),
           horizontalSpace(10.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
