@@ -206,42 +206,46 @@ class _HomeScreenState extends State<HomeScreen> implements HomeView {
         builder: (builder) {
           return Stack(
             children: [
-              Container(
-                height: Utility.screenHeight(context) * 0.30,
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                margin: const EdgeInsets.only(top: 90.0),
-                decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(24.0),
-                      topLeft: Radius.circular(24.0),
-                    )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Create Group', style: textStyleDarkHeavy24px700),
-                    verticalSpace(28.0),
-                    emailField(),
-                    verticalSpace(28.0),
-                    Center(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SplitBillScreen(groupTextController.text.toString())));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.colorPrimaryLight,
-                            borderRadius: BorderRadius.circular(12.0),
+              AnimatedPadding(
+                padding: MediaQuery.of(context).viewInsets,
+                duration: Duration(milliseconds: 400),
+                child: Container(
+                  height: Utility.screenHeight(context) * 0.30,
+                  padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                  margin: const EdgeInsets.only(top: 90.0),
+                  decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(24.0),
+                        topLeft: Radius.circular(24.0),
+                      )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Create Group', style: textStyleDarkHeavy24px700),
+                      verticalSpace(28.0),
+                      emailField(),
+                      verticalSpace(28.0),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => SplitBillScreen(groupTextController.text.toString())));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.colorPrimaryLight,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            height: 45.0,
+                            width: 200.0,
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Center(child: Text("Create", style: textStylePrimary16px700w)),
                           ),
-                          height: 45.0,
-                          width: 200.0,
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Center(child: Text("Create", style: textStylePrimary16px700w)),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Positioned(
