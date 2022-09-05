@@ -40,9 +40,10 @@ class _ViewScreenState extends State<ViewScreen> implements SplitBillView {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

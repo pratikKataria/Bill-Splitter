@@ -38,10 +38,11 @@ class _SignupScreenState extends State<SignupScreen> implements CoreView {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: ListView(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: ListView(
           children: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0),

@@ -1,7 +1,6 @@
 import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/Images.dart';
-import 'package:bill_splitter/ui/home/home_screen.dart';
 import 'package:bill_splitter/ui/splitBill/model/split_request.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:bill_splitter/util/Utility.dart';
@@ -28,9 +27,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -236,7 +236,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   int totalExpense() {
     int totalExpense = 0;
     expenses.forEach((element) {
-      totalExpense += (element.cost*element.qty);
+      totalExpense += (element.cost * element.qty);
     });
     return totalExpense;
   }
@@ -246,7 +246,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       margin: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          Icon(Icons.arrow_back_ios),
+          InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios)),
           horizontalSpace(10.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

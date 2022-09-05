@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>374440511837-27gahri7mifqiq893cgr0a8rgh6a8dne.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.374440511837-27gahri7mifqiq893cgr0a8rgh6a8dne</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>374440511837-3s13tufrthgftsa0onoa28t40a9ltl10.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAs9UPMR1C7A3jEXj4H05m4wz7Y1j5omnk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>374440511837</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fluttergod.billSplitter</string>
+	<key>PROJECT_ID</key>
+	<string>billsplitter-5d720</string>
+	<key>STORAGE_BUCKET</key>
+	<string>billsplitter-5d720.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:374440511837:ios:8a6f5a53bb497cde0c40b4</string>
+	<key>DATABASE_URL</key>
+	<string>https://billsplitter-5d720-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

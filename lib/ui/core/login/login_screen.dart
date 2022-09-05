@@ -37,10 +37,11 @@ class _LoginScreenState extends State<LoginScreen> implements CoreView {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: Container(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20.0),
           child: ListView(
             children: [

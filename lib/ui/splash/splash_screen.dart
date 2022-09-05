@@ -1,3 +1,4 @@
+import 'package:bill_splitter/res/AppColors.dart';
 import 'package:bill_splitter/res/Fonts.dart';
 import 'package:bill_splitter/res/LottieResource.dart';
 import 'package:bill_splitter/ui/core/login/login_screen.dart';
@@ -21,9 +22,10 @@ class SplashScreen extends StatelessWidget {
       }
     });
 
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

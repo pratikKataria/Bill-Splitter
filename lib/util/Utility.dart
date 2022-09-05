@@ -186,11 +186,12 @@ class Utility {
 
   static void portrait() => SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  static void statusBarAndNavigationBarColor() => SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: AppColors.white, // status bar color
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: AppColors.background, // status bar icon color
-      ));
+  static void statusBarAndNavigationBarColor() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.white, // Color for Android
+        statusBarBrightness: Brightness.dark // Dark == white status bar -- for IOS.
+    ));
+  }
 
   static void statusBarAndNavigationBarColorDark() => SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: AppColors.textColorBlack, // status bar color
