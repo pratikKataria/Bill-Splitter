@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.flutter_god.bill_splitter">
    <application
-        android:label="bill_splitter"
+        android:label="Split-It"
         android:icon="@mipmap/ic_launcher"
        android:usesCleartextTraffic="true">
 
