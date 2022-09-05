@@ -1,6 +1,7 @@
 import 'package:bill_splitter/ui/core/login/login_screen.dart';
 import 'package:bill_splitter/ui/core/signup/signup_screen.dart';
 import 'package:bill_splitter/ui/home/home_screen.dart';
+import 'package:bill_splitter/ui/splash/splash_screen.dart';
 import 'package:bill_splitter/ui/splitBill/split_bill_screen.dart';
 import 'package:bill_splitter/user/AuthUser.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,11 +39,7 @@ class MyApp extends StatelessWidget {
     );
   }
   checkAuthUser(authResult) {
-    if (authResult) {
-      return HomeScreen();
-    } else {
-      return LoginScreen();
-    }
+    return SplashScreen(authResult);
   }
 
 }

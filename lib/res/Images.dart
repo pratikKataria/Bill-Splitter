@@ -16,5 +16,6 @@ class Images {
   static const kIconPerson = base + "ic_person.png";
   static const kImageAddFriend = base + "img_add_friends.png";
   static const kImageLogout = base + "img_logout.png";
+  static const kImageSplitIt = base + "img_split_it.png";
 
 }

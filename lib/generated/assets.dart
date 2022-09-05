@@ -21,5 +21,6 @@ class Assets {
   static const String imagesImgLogout = 'assets/images/img_logout.png';
   static const String imagesImgNote = 'assets/images/img_note.png';
   static const String imagesImgSplitBill = 'assets/images/img_split_bill.png';
+  static const String imagesImgSplitIt = 'assets/images/img_split_it.png';
 
 }
